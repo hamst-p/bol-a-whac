@@ -21,3 +21,19 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# .gitignore
+.env
+
+# Node.js関連
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# ビルド出力
+build/
+dist/
+
+# その他
+.DS_Store
