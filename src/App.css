@@ -1,38 +1,78 @@
+/* App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  /* 背景画像の設定を削除しました */
+}
+
 .App {
   text-align: center;
+  font-family: Arial, sans-serif;
+  color: #000000; /* テキストを見やすくするために色を変更 */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 10px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-top: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.hole {
+  width: 100px;
+  height: 100px;
+  background-color: #53bba5; /* 穴の色を変更 */
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes App-logo-spin {
+.mole {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mole.enter {
+  animation: moleUp 0.3s forwards;
+}
+
+.mole.exit {
+  animation: moleDown 0.3s forwards;
+}
+
+@keyframes moleUp {
   from {
-    transform: rotate(0deg);
+    bottom: -100%;
   }
   to {
-    transform: rotate(360deg);
+    bottom: 10px;
   }
+}
+
+@keyframes moleDown {
+  from {
+    bottom: 10px;
+  }
+  to {
+    bottom: -100%;
+  }
+}
+
+/* ボタンのスタイル（オプション） */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
