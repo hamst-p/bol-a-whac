@@ -29,7 +29,7 @@ function Mole({ isVisible }) {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isVisible]);
+  }, [isVisible, show]); // 'show' を依存配列に追加
 
   if (!show) {
     return null;
@@ -38,7 +38,7 @@ function Mole({ isVisible }) {
   return (
     <img
       src="/bolana.png" // モグラの画像ファイル名を確認
-      alt="モグラ"
+      alt="bol"
       className={`mole ${animate ? 'enter' : 'exit'}`}
     />
   );
@@ -48,7 +48,7 @@ function App() {
   // 状態管理
   const [holes, setHoles] = useState(Array(9).fill(false));
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(13.0);
+  const [timeLeft, setTimeLeft] = useState(13.01);
   const [gameActive, setGameActive] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
@@ -56,6 +56,7 @@ function App() {
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
   const moleTimeouts = useRef({});
+  const timeLeftRef = useRef(timeLeft); // timeLeftの最新値を保持
 
   // ユーザーの認証状態を監視
   useEffect(() => {
@@ -70,7 +71,7 @@ function App() {
           })
           .catch((error) => {
             console.error('Authentication error:', error);
-            setError('Authentication failed. Please refresh page.');
+            setError('ᴬᵘᵗʰᵉⁿᵗⁱᶜᵃᵗⁱᵒⁿ ᶠᵃⁱˡᵉᵈ‧ ᴾˡᵉᵃˢᵉ ʳᵉᶠʳᵉˢʰ ᵖᵃᵍᵉ‧');
           });
       }
     });
@@ -82,7 +83,11 @@ function App() {
     let timer;
     if (gameActive && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => (prev - 0.1).toFixed(1));
+        setTimeLeft((prev) => {
+          const newTimeLeft = parseFloat((prev - 0.1).toFixed(1));
+          timeLeftRef.current = newTimeLeft; // 最新のtimeLeftを更新
+          return newTimeLeft;
+        });
       }, 100);
     } else if (timeLeft <= 0) {
       setGameActive(false);
@@ -93,39 +98,46 @@ function App() {
 
   // モグラの出現管理
   useEffect(() => {
-    let moleAppearanceInterval;
+    let moleTimeout;
     if (gameActive) {
-      moleAppearanceInterval = setInterval(() => {
-        setHoles((prevHoles) => {
-          const newHoles = [...prevHoles];
-          if (Math.random() < 0.5) {
-            const emptyIndices = newHoles
-              .map((isVisible, index) => (!isVisible ? index : null))
-              .filter((index) => index !== null);
-            if (emptyIndices.length > 0) {
-              const randomIndex =
-                emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-              newHoles[randomIndex] = true;
+      const scheduleNextMole = () => {
+        const currentTimeLeft = timeLeftRef.current;
+        const moleInterval = currentTimeLeft > 5 ? 500 : 500 / 3; // 出現間隔を調整
+        moleTimeout = setTimeout(() => {
+          setHoles((prevHoles) => {
+            const newHoles = [...prevHoles];
+            if (Math.random() < 0.5) {
+              const emptyIndices = newHoles
+                .map((isVisible, index) => (!isVisible ? index : null))
+                .filter((index) => index !== null);
+              if (emptyIndices.length > 0) {
+                const randomIndex =
+                  emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+                newHoles[randomIndex] = true;
 
-              const moleDuration = Math.random() * 1000 + 500;
-              const timeoutId = setTimeout(() => {
-                setHoles((prevHoles) => {
-                  const updatedHoles = [...prevHoles];
-                  updatedHoles[randomIndex] = false;
-                  return updatedHoles;
-                });
-              }, moleDuration);
+                const moleDuration = Math.random() * 1000 + 500;
+                const timeoutId = setTimeout(() => {
+                  setHoles((prevHoles) => {
+                    const updatedHoles = [...prevHoles];
+                    updatedHoles[randomIndex] = false;
+                    return updatedHoles;
+                  });
+                }, moleDuration);
 
-              moleTimeouts.current[randomIndex] = timeoutId;
+                moleTimeouts.current[randomIndex] = timeoutId;
+              }
             }
-          }
-          return newHoles;
-        });
-      }, 500);
+            return newHoles;
+          });
+          scheduleNextMole(); // 次のモグラ出現をスケジュール
+        }, moleInterval);
+      };
+
+      scheduleNextMole();
     }
 
     return () => {
-      clearInterval(moleAppearanceInterval);
+      clearTimeout(moleTimeout);
       Object.values(moleTimeouts.current).forEach((timeoutId) =>
         clearTimeout(timeoutId)
       );
@@ -158,7 +170,7 @@ function App() {
       },
       (error) => {
         console.error('Error fetching leaderboard:', error);
-        setError('Error fetching leaderbol');
+        setError('Error fetching leaderboard');
       }
     );
     return () => unsubscribe();
@@ -166,7 +178,8 @@ function App() {
 
   const startGame = () => {
     setScore(0);
-    setTimeLeft(13.0);
+    setTimeLeft(13.01);
+    timeLeftRef.current = 13.01;
     setGameActive(true);
     setMessage('');
     setError('');
@@ -174,7 +187,8 @@ function App() {
 
   const resetGame = () => {
     setScore(0);
-    setTimeLeft(13.0);
+    setTimeLeft(13.01);
+    timeLeftRef.current = 13.01;
     setGameActive(false);
     setPlayerName('');
     setMessage('');
@@ -211,9 +225,9 @@ function App() {
                 name: playerName,
                 score: score,
               });
-              setMessage('New high score');
+              setMessage('Nu high score');
             } else {
-              setMessage('ngmi');
+              setMessage('u didnt make it lol');
             }
           } else {
             // 新しいユーザーとしてスコアを保存
@@ -222,7 +236,7 @@ function App() {
               name: playerName,
               score: score,
             });
-            setMessage('Score saved');
+            setMessage('Score saved!');
           }
         } catch (err) {
           console.error('Error saving score:', err);
@@ -242,13 +256,13 @@ function App() {
       {error && <p className="error-message">{error}</p>}
 
       <p>Score: {score}</p>
-      <p>Time remiaining: {timeLeft}sec</p>
+      <p>Time remaining: {timeLeft.toFixed(2)} sec</p>
 
-      {!gameActive && timeLeft === 13.0 && (
-        <button onClick={startGame}>FUCK IT</button>
+      {!gameActive && timeLeft === 13.01 && (
+        <button onClick={startGame}>Բ⋃ᙅ𐌊 ᓰƬ ᗯᕮ ᗷ〇し</button>
       )}
 
-      {!gameActive && timeLeft === 0 && (
+      {!gameActive && timeLeft <= 0 && (
         <div>
           <p>your score is {score} </p>
           {/* メッセージの表示 */}
@@ -296,7 +310,7 @@ function App() {
           <ol>
             {leaderboard.map((entry, index) => (
               <li key={index}>
-                {entry.name}: {entry.score} 
+                {entry.name}: {entry.score}
               </li>
             ))}
           </ol>

@@ -14,10 +14,39 @@ body {
 }
 
 .header-image {
-  width: 200px;
+  width: 180px;
   height: auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  animation: sway 4s infinite ease-in-out; /* 速度を4秒に */
+}
+
+/* 新しいアニメーションを追加 */
+@keyframes sway {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  15% {
+    transform: translateX(-10px) translateY(-5px);
+  }
+  30% {
+    transform: translateX(10px) translateY(5px);
+  }
+  45% {
+    transform: translateX(-15px) translateY(10px);
+  }
+  60% {
+    transform: translateX(15px) translateY(-10px);
+  }
+  75% {
+    transform: translateX(-10px) translateY(5px);
+  }
+  90% {
+    transform: translateX(10px) translateY(-5px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
 }
 
 /* メッセージのスタイル */
