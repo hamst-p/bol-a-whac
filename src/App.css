@@ -152,3 +152,56 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* モバイルビューでの調整 */
+@media (max-width: 600px) {
+  /* フォームのスタイルを調整 */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  /* 入力フィールドの幅を調整 */
+  input[type='text'] {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+    padding: 10px; /* パディングを増やしてタップしやすく */
+    font-size: 16px; /* フォントサイズを維持 */
+    border: 1px solid #ccc; /* ボーダーを追加 */
+    border-radius: 5px; /* 角を丸く */
+  }
+
+  /* Save scoreボタンのスタイルを調整 */
+  button[type='submit'] {
+    padding: 10px 20px; /* パディングを増やす */
+    font-size: 16px; /* フォントサイズを維持 */
+    margin-left: 0; /* 左マージンをリセット */
+    width: 100%; /* ボタンの幅を100%に */
+    background-color: #53bba5; /* ボタンの背景色を変更 */
+    color: #ffffff; /* テキストカラーを白に設定 */
+    border: none; /* ボーダーをなくす */
+    border-radius: 5px; /* 角を丸く */
+    cursor: pointer; /* カーソルをポインターに */
+  }
+
+  /* ボタンホバー時のスタイル（モバイルでは効果が薄いが念のため） */
+  button[type='submit']:hover {
+    background-color: #429688;
+  }
+
+  /* 他のボタン（Replayボタン）のスタイルも調整 */
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #53bba5; /* 背景色を統一 */
+    color: #ffffff; /* テキストカラーを白に設定 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* ボタンの幅を100%に */
+    margin-top: 10px; /* 上マージンを追加 */
+  }
+}
