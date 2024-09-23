@@ -70,7 +70,7 @@ function App() {
           })
           .catch((error) => {
             console.error('Authentication error:', error);
-            setError('ユーザー認証に失敗しました。ページをリロードしてください。');
+            setError('Authentication failed. Please refresh page.');
           });
       }
     });
@@ -158,7 +158,7 @@ function App() {
       },
       (error) => {
         console.error('Error fetching leaderboard:', error);
-        setError('リーダーボードの取得に失敗しました。');
+        setError('Error fetching leaderbol');
       }
     );
     return () => unsubscribe();
@@ -211,9 +211,9 @@ function App() {
                 name: playerName,
                 score: score,
               });
-              setMessage('新しいハイスコアを記録しました！');
+              setMessage('New high score');
             } else {
-              setMessage('前回のスコアを上回っていません。スコアは更新されませんでした。');
+              setMessage('ngmi');
             }
           } else {
             // 新しいユーザーとしてスコアを保存
@@ -222,14 +222,14 @@ function App() {
               name: playerName,
               score: score,
             });
-            setMessage('スコアを保存しました！');
+            setMessage('Score saved');
           }
         } catch (err) {
           console.error('Error saving score:', err);
-          setError('スコアの保存に失敗しました。');
+          setError('Error saving score');
         }
       } else {
-        setError('ユーザー認証がされていません。');
+        setError('Not authenticated');
       }
     }
   };
@@ -296,7 +296,7 @@ function App() {
           <ol>
             {leaderboard.map((entry, index) => (
               <li key={index}>
-                {entry.name}: {entry.score} 点
+                {entry.name}: {entry.score} 
               </li>
             ))}
           </ol>
