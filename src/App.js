@@ -15,14 +15,40 @@ import {
 import { signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 function Mole({ isVisible }) {
-  // ...（Moleコンポーネントのコードは変更なし）
+  const [show, setShow] = useState(isVisible);
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      setShow(true);
+      setAnimate(true);
+    } else if (show) {
+      setAnimate(false);
+      const timer = setTimeout(() => {
+        setShow(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <img
+      src="/bolana.png" // モグラの画像ファイル名を確認
+      alt="モグラ"
+      className={`mole ${animate ? 'enter' : 'exit'}`}
+    />
+  );
 }
 
 function App() {
   // 状態管理
   const [holes, setHoles] = useState(Array(9).fill(false));
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(13.01);
+  const [timeLeft, setTimeLeft] = useState(13.0);
   const [gameActive, setGameActive] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
@@ -44,7 +70,7 @@ function App() {
           })
           .catch((error) => {
             console.error('Authentication error:', error);
-            setError('Faild, bolol');
+            setError('ユーザー認証に失敗しました。ページをリロードしてください。');
           });
       }
     });
@@ -56,7 +82,7 @@ function App() {
     let timer;
     if (gameActive && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => (prev - 0.1).toFixed(2));
+        setTimeLeft((prev) => (prev - 0.1).toFixed(1));
       }, 100);
     } else if (timeLeft <= 0) {
       setGameActive(false);
@@ -132,7 +158,7 @@ function App() {
       },
       (error) => {
         console.error('Error fetching leaderboard:', error);
-        setError('Faild, leaderbolol');
+        setError('リーダーボードの取得に失敗しました。');
       }
     );
     return () => unsubscribe();
@@ -140,7 +166,7 @@ function App() {
 
   const startGame = () => {
     setScore(0);
-    setTimeLeft(13.01);
+    setTimeLeft(13.0);
     setGameActive(true);
     setMessage('');
     setError('');
@@ -148,7 +174,7 @@ function App() {
 
   const resetGame = () => {
     setScore(0);
-    setTimeLeft(13.01);
+    setTimeLeft(13.0);
     setGameActive(false);
     setPlayerName('');
     setMessage('');
@@ -185,7 +211,7 @@ function App() {
                 name: playerName,
                 score: score,
               });
-              setMessage('ǝɹɔos ɥƃᴉɥ ʍǝN');
+              setMessage('新しいハイスコアを記録しました！');
             } else {
               setMessage('前回のスコアを上回っていません。スコアは更新されませんでした。');
             }
@@ -196,14 +222,14 @@ function App() {
               name: playerName,
               score: score,
             });
-            setMessage('s͛cͨoͦrͬeͤ s͛aͣvͮdͩ');
+            setMessage('スコアを保存しました！');
           }
         } catch (err) {
           console.error('Error saving score:', err);
-          setError('failed');
+          setError('スコアの保存に失敗しました。');
         }
       } else {
-        setError('not authorized');
+        setError('ユーザー認証がされていません。');
       }
     }
   };
@@ -215,16 +241,16 @@ function App() {
 
       {error && <p className="error-message">{error}</p>}
 
-      <p>スコア: {score}</p>
-      <p>残り時間: {timeLeft}秒</p>
+      <p>Score: {score}</p>
+      <p>Time remiaining: {timeLeft}sec</p>
 
-      {!gameActive && timeLeft === 13.01 && (
-        <button onClick={startGame}>ゲーム開始</button>
+      {!gameActive && timeLeft === 13.0 && (
+        <button onClick={startGame}>FUCK IT</button>
       )}
 
       {!gameActive && timeLeft === 0 && (
         <div>
-          <p>ゲーム終了！あなたのスコアは {score} です。</p>
+          <p>your score is {score} </p>
           {/* メッセージの表示 */}
           {message && <p className="success-message">{message}</p>}
           {/* エラーメッセージの表示 */}
@@ -234,15 +260,15 @@ function App() {
             <form onSubmit={handleNameSubmit}>
               <input
                 type="text"
-                placeholder="あなたの名前を入力"
+                placeholder="your name"
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
                 required
               />
-              <button type="submit">WE BOL</button>
+              <button type="submit">Save score</button>
             </form>
           ) : (
-            <button onClick={resetGame}>Replya</button>
+            <button onClick={resetGame}>Replay</button>
           )}
         </div>
       )}

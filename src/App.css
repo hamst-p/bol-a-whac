@@ -1,7 +1,6 @@
 /* App.css */
 
-/* 既存のスタイルはそのまま */
-
+/* 基本スタイル */
 body {
   margin: 0;
   padding: 0;
@@ -32,4 +31,95 @@ body {
   font-weight: bold;
 }
 
-/* その他のスタイルは省略 */
+/* ゲームボードのスタイル */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.hole {
+  width: 100px;
+  height: 100px;
+  background-color: #53bba5;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.mole {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mole.enter {
+  animation: moleUp 0.3s forwards;
+}
+
+.mole.exit {
+  animation: moleDown 0.3s forwards;
+}
+
+@keyframes moleUp {
+  from {
+    bottom: -100%;
+  }
+  to {
+    bottom: 10px;
+  }
+}
+
+@keyframes moleDown {
+  from {
+    bottom: 10px;
+  }
+  to {
+    bottom: -100%;
+  }
+}
+
+/* リーダーボードのスタイル */
+.leaderboard {
+  margin-top: 20px;
+}
+
+.leaderboard ol {
+  list-style: decimal;
+  padding-left: 20px;
+  text-align: left;
+  display: inline-block;
+}
+
+.leaderboard li {
+  margin: 5px 0;
+}
+
+/* 入力フォームのスタイル */
+input[type='text'] {
+  padding: 5px;
+  font-size: 16px;
+}
+
+button[type='submit'] {
+  padding: 5px 10px;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+/* ボタンのスタイル */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
