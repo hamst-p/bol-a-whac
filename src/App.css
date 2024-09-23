@@ -172,19 +172,21 @@ button {
     font-size: 16px; /* フォントサイズを維持 */
     border: 1px solid #ccc; /* ボーダーを追加 */
     border-radius: 5px; /* 角を丸く */
+    box-sizing: border-box; /* パディングを含めて幅を計算 */
   }
 
   /* Save scoreボタンのスタイルを調整 */
   button[type='submit'] {
-    padding: 10px 20px; /* パディングを増やす */
-    font-size: 16px; /* フォントサイズを維持 */
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 0; /* 上下のパディングを増やし、左右は不要 */
+    font-size: 16px;
     margin-left: 0; /* 左マージンをリセット */
-    width: 100%; /* ボタンの幅を100%に */
     background-color: #53bba5; /* ボタンの背景色を変更 */
     color: #ffffff; /* テキストカラーを白に設定 */
     border: none; /* ボーダーをなくす */
     border-radius: 5px; /* 角を丸く */
-    cursor: pointer; /* カーソルをポインターに */
+    cursor: pointer;
   }
 
   /* ボタンホバー時のスタイル（モバイルでは効果が薄いが念のため） */
@@ -192,16 +194,18 @@ button {
     background-color: #429688;
   }
 
-  /* 他のボタン（Replayボタン）のスタイルも調整 */
-  button {
-    padding: 10px 20px;
+  /* Replayボタンのスタイルを調整 */
+  .leaderboard button, /* Replayボタンが特定のクラスを持っていない場合 */
+  button { /* 一般的なボタンスタイルを調整 */
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 0;
     font-size: 16px;
     background-color: #53bba5; /* 背景色を統一 */
     color: #ffffff; /* テキストカラーを白に設定 */
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%; /* ボタンの幅を100%に */
     margin-top: 10px; /* 上マージンを追加 */
   }
 }
