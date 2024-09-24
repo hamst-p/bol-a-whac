@@ -250,7 +250,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Whac-a-bol</h1>
+      <h1>FUCK IT WE BOL</h1>
       <img src="/bolana.png" alt="Bolana" className="header-image" />
 
       {error && <p className="error-message">{error}</p>}
