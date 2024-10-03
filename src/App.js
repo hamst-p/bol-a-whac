@@ -102,7 +102,7 @@ function App() {
     if (gameActive) {
       const scheduleNextMole = () => {
         const currentTimeLeft = timeLeftRef.current;
-        const moleInterval = currentTimeLeft > 5 ? 500 : 500 / 3; // 出現間隔を調整
+        const moleInterval = currentTimeLeft > 5 ? 300 : 300 / 3; // 出現間隔を調整
         moleTimeout = setTimeout(() => {
           setHoles((prevHoles) => {
             const newHoles = [...prevHoles];
